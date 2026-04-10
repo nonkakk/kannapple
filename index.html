@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Bee Ink — グラフィックレコーダー 吉川カンナ</title>
+  <meta name="description" content="神戸を拠点に、ヘルスケア・多様性・バイリンガル対応のグラフィックレコーディングを提供。吉川カンナ（Blue Bee Ink）">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --sky-tint:   #e4f3f9;
+      --sky-blue:   #7cb8d4;
+      --vivid:      #1A8FD1;
+      --navy:       #1a3040;
+      --white:      #ffffff;
+      --cream:      #fafafa;
+      --text-main:  #1a3040;
+      --text-sub:   #5a7a88;
+      --text-muted: #8aabba;
+      --border:     #c8dde6;
+      --max-w:      660px;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'DM Sans', system-ui, sans-serif;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--text-main);
+      background: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+    .section { padding: 72px 0; }
+    .section-bg { background: var(--sky-tint); }
+    .divider { height: 1px; background: var(--sky-tint); }
+    .divider-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ── SECTION TAG ── */
+    .sec-tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--vivid);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .sec-tag::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 2px solid var(--vivid);
+      height: 56px;
+    }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--navy);
+      letter-spacing: 0.04em;
+    }
+    .nav-bee {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--vivid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-bee::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 12px;
+      color: var(--text-sub);
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--vivid); }
+    .nav-cta {
+      font-size: 12px;
+      color: var(--white);
+      background: var(--vivid);
+      border-radius: 24px;
+      padding: 6px 16px;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--navy); }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      width: 22px;
+      height: 1.5px;
+      background: var(--vivid);
+      display: block;
+      transition: transform 0.2s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 28px 0;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-kicker {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--vivid);
+      letter-spacing: 0.16em;
+      margin-bottom: 20px;
+    }
+    .hero-h1 {
+      font-family: var(--serif);
+      font-size: 52px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .hero-h1 em {
+      color: var(--vivid);
+      font-style: italic;
+    }
+    .hero-sub {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.85;
+      max-width: 420px;
+      margin: 0 auto 32px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--vivid);
+      border-radius: 28px;
+      padding: 12px 28px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--navy); transform: translateY(-1px); }
+    .btn-outline {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--vivid);
+      background: var(--white);
+      border: 1.5px solid var(--vivid);
+      border-radius: 28px;
+      padding: 11px 28px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--vivid);
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+    .hero-img {
+      margin: 48px 28px 0;
+      height: 320px;
+      background: var(--sky-tint);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      max-width: var(--max-w);
+    }
+    .hero-img-placeholder {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+    .about-photo {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #c0dce8;
+      border: 3px solid var(--sky-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-sub);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-name {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .about-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--vivid);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+    .about-body {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.85;
+    }
+    .quote {
+      border-left: 3px solid var(--sky-blue);
+      padding: 14px 18px;
+      background: var(--sky-tint);
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 16px;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--navy);
+      font-style: italic;
+      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+    .quote-from {
+      font-size: 12px;
+      color: var(--sky-blue);
+      font-weight: 500;
+    }
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1.5px solid var(--sky-blue);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .badge-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--vivid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .badge-icon::after {
+      content: '';
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+    .badge-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .badge-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* ── SERVICE ── */
+    .circles {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .circ {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      cursor: default;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .circ:hover { transform: scale(1.04); }
+    .circ-1 { border: 2px solid var(--vivid); }
+    .circ-2 { border: 2px solid var(--sky-blue); }
+    .circ-3 { border: 2px solid var(--vivid); }
+    .circ-4 { border: 2px solid var(--sky-blue); }
+    .circ-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    .circ-name {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--navy);
+      text-align: center;
+    }
+    .circ-desc {
+      font-size: 10px;
+      color: var(--text-sub);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* ── WORKS ── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--sky-blue);
+      color: #1d5f78;
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill:hover { border-color: var(--vivid); color: var(--vivid); }
+    .pill.active {
+      background: var(--vivid);
+      color: var(--white);
+      border-color: var(--vivid);
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .work-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 0.5px solid var(--border);
+      transition: transform 0.2s;
+    }
+    .work-card:hover { transform: translateY(-2px); }
+    .work-img {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .work-img-placeholder {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      font-style: italic;
+    }
+    .work-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      padding: 8px 10px;
+      background: var(--white);
+      font-weight: 500;
+    }
+    .play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .play-tri {
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid var(--vivid);
+      margin-left: 2px;
+    }
+    .works-more {
+      text-align: center;
+      margin-top: 28px;
+    }
+    .btn-more {
+      font-size: 13px;
+      color: var(--vivid);
+      border: 1px solid var(--vivid);
+      border-radius: 24px;
+      padding: 9px 24px;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-more:hover { background: var(--vivid); color: var(--white); }
+
+    /* ── CONTACT ── */
+    .cal-wrap {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .cal-head {
+      background: var(--vivid);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cal-month {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .cal-nav {
+      display: flex;
+      gap: 10px;
+    }
+    .cal-arr {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: var(--white);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .cal-arr:hover { background: rgba(255,255,255,0.35); }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      padding: 12px;
+      background: var(--white);
+    }
+    .cal-cell {
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .cal-head-cell {
+      color: var(--sky-blue);
+      font-weight: 500;
+      font-size: 11px;
+    }
+    .cal-avail {
+      background: var(--vivid);
+      color: var(--white);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cal-avail:hover { background: var(--navy); }
+    .cal-busy {
+      background: var(--sky-tint);
+      color: var(--text-muted);
+    }
+    .cal-empty { }
+    .cal-legend {
+      display: flex;
+      gap: 16px;
+      padding: 0 12px 12px;
+      background: var(--white);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    /* Google Form embed */
+    .gform-wrap {
+      background: var(--white);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .gform-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 0.5px solid var(--border);
+      background: var(--sky-tint);
+    }
+    .gform-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--vivid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+    .gform-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+    .gform-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 1px;
+    }
+    .gform-iframe {
+      width: 100%;
+      height: 560px;
+      border: none;
+      display: block;
+    }
+    /* Placeholder when no real form yet */
+    .gform-placeholder {
+      padding: 24px;
+    }
+    .form-field { margin-bottom: 16px; }
+    .form-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      font-weight: 500;
+      display: block;
+    }
+    .form-input {
+      width: 100%;
+      height: 40px;
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--cream);
+      padding: 0 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text-main);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--vivid); }
+    .form-select {
+      width: 100%;
+      height: 40px;
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--cream);
+      padding: 0 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+    }
+    .form-textarea {
+      width: 100%;
+      height: 100px;
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--cream);
+      padding: 10px 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text-main);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-textarea:focus { border-color: var(--vivid); }
+    .form-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .btn-submit {
+      width: 100%;
+      height: 44px;
+      background: var(--vivid);
+      border-radius: 28px;
+      border: none;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: var(--navy); transform: translateY(-1px); }
+
+    /* Newsletter */
+    .nl-box {
+      background: var(--white);
+      border: 1.5px solid var(--sky-blue);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-top: 20px;
+    }
+    .nl-title {
+      font-family: var(--serif);
+      font-size: 18px;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .nl-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .nl-row {
+      display: flex;
+      gap: 8px;
+    }
+    .nl-input {
+      flex: 1;
+      height: 40px;
+      border: 0.5px solid var(--border);
+      border-radius: 24px;
+      background: var(--sky-tint);
+      padding: 0 16px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+    }
+    .nl-input:focus { border-color: var(--vivid); }
+    .nl-btn {
+      height: 40px;
+      padding: 0 20px;
+      background: var(--vivid);
+      border-radius: 24px;
+      border: none;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--white);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .nl-btn:hover { background: var(--navy); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--navy);
+      padding: 28px 28px;
+    }
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 400;
+      color: #b0d4e2;
+      letter-spacing: 0.06em;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: #4a6a7a;
+      margin-top: 4px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-link {
+      font-size: 11px;
+      color: var(--sky-blue);
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--white); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-kicker { animation: fadeUp 0.6s ease both; }
+    .hero-h1     { animation: fadeUp 0.6s ease 0.1s both; }
+    .hero-sub    { animation: fadeUp 0.6s ease 0.2s both; }
+    .hero-btns   { animation: fadeUp 0.6s ease 0.3s both; }
+    .hero-img    { animation: fadeUp 0.6s ease 0.4s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .section { padding: 52px 0; }
+      .hero { padding: 48px 20px 0; }
+      .hero-h1 { font-size: 36px; }
+      .hero-sub { font-size: 14px; }
+      .hero-img { margin: 32px 20px 0; height: 220px; }
+      .hero-btns { flex-direction: column; gap: 8px; }
+      .hero-btns .btn-primary,
+      .hero-btns .btn-outline { width: 100%; text-align: center; }
+      .about-grid { grid-template-columns: 72px 1fr; gap: 14px; }
+      .about-photo { width: 72px; height: 72px; }
+      .about-name { font-size: 20px; }
+      .circles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .works-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .work-img { height: 100px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <div class="nav-bee"></div>
+        Blue Bee Ink
+      </a>
+      <div class="nav-links">
+        <a href="#home"    class="nav-link">Home</a>
+        <a href="#about"   class="nav-link">About</a>
+        <a href="#service" class="nav-link">Service</a>
+        <a href="#works"   class="nav-link">Works</a>
+        <a href="#contact" class="nav-cta">Contact →</a>
+      </div>
+      <div class="nav-hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── 01 HERO ── -->
+  <section id="home">
+    <div class="hero">
+      <p class="hero-kicker">Graphic Recorder · Bilingual · Kobe</p>
+      <h1 class="hero-h1">Ideas drawn<br>into <em>clarity.</em></h1>
+      <p class="hero-sub">
+        複雑なアイデアを、伝わるビジュアルへ。<br>
+        ヘルスケア・多様性・バイリンガル対応の<br>
+        グラフィックレコーディングサービス。
+      </p>
+      <div class="hero-btns">
+        <a href="#contact"><button class="btn-primary">お問い合わせ →</button></a>
+        <a href="#works"><button class="btn-outline">Works を見る</button></a>
+      </div>
+    </div>
+    <div class="hero-img" style="max-width: calc(var(--max-w)); margin-left: auto; margin-right: auto;">
+      <!-- TODO: 実際のヒーロー画像・アニメーションに差し替え -->
+      <span class="hero-img-placeholder">ヒーロー画像 / アニメーション動画</span>
+    </div>
+    <div class="divider" style="margin-top: 72px;"></div>
+  </section>
+
+  <!-- ── 02 ABOUT ── -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="sec-tag">About me</div>
+      <div class="about-grid">
+        <div class="about-photo">
+          <!-- TODO: <img src="assets/images/kanna-photo.jpg" alt="吉川カンナ"> -->
+          Photo
+        </div>
+        <div>
+          <h2 class="about-name">吉川カンナ</h2>
+          <p class="about-title">Graphic Recorder · Blue Bee Ink · Kobe</p>
+          <p class="about-body">
+            外資系製薬企業での豊富な経験を活かし、神戸を拠点にヘルスケア・多様性・バイリンガルに特化したグラフィックレコーディングを提供しています。医療・製薬分野の専門知識と、日英バイリンガルの強みを生かしたビジュアル制作が得意です。アニメーション制作にも力を入れ、SNSで広がるコンテンツも手がけています。
+          </p>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p class="quote-text">
+          「カンナさんの描く記録のおかげで、参加者全員が会議の内容をすぐに理解できました。複雑なテーマがこんなにわかりやすくなるとは思っていませんでした。」
+        </p>
+        <p class="quote-from">— クライアント名・役職 / 企業名</p>
+      </div>
+
+      <div class="badge">
+        <div class="badge-icon"></div>
+        <div>
+          <p class="badge-text">認定グラレコアンバサダー</p>
+          <p class="badge-sub">Graphic Recording Ambassador — 認定証画像をここに挿入</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-inner"></div></div>
+
+  <!-- ── 03 SERVICE ── -->
+  <section id="service" class="section section-bg">
+    <div class="container">
+      <div class="sec-tag">Services</div>
+      <div class="circles">
+        <div class="circ circ-1">
+          <div class="circ-dot" style="background: #1A8FD1;"></div>
+          <span class="circ-name">Medical</span>
+          <span class="circ-desc">医療・ヘルスケア分野の専門対応</span>
+        </div>
+        <div class="circ circ-2">
+          <div class="circ-dot" style="background: #5aaa8a;"></div>
+          <span class="circ-name">Diversity</span>
+          <span class="circ-desc">多様性・インクルージョンのビジュアル化</span>
+        </div>
+        <div class="circ circ-3">
+          <div class="circ-dot" style="background: #7cb8d4;"></div>
+          <span class="circ-name">English</span>
+          <span class="circ-desc">日英バイリンガル対応</span>
+        </div>
+        <div class="circ circ-4">
+          <div class="circ-dot" style="background: #d4a060;"></div>
+          <span class="circ-name">Animation</span>
+          <span class="circ-desc">SNS向けモーションコンテンツ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 WORKS ── -->
+  <section id="works" class="section">
+    <div class="container">
+      <div class="sec-tag">Works</div>
+      <div class="filter-row">
+        <button class="pill active" data-filter="all" onclick="filterWorks(this, 'all')">All</button>
+        <button class="pill" data-filter="medical" onclick="filterWorks(this, 'medical')">Medical</button>
+        <button class="pill" data-filter="diversity" onclick="filterWorks(this, 'diversity')">Diversity</button>
+        <button class="pill" data-filter="animation" onclick="filterWorks(this, 'animation')">Animation</button>
+        <button class="pill" data-filter="bilingual" onclick="filterWorks(this, 'bilingual')">Bilingual</button>
+      </div>
+      <div class="works-grid" id="works-grid">
+        <div class="work-card" data-cat="medical">
+          <div class="work-img" style="background: #b0d4e2;">
+            <!-- TODO: <img src="assets/images/work-medical-01.jpg" alt="医療カンファレンス"> -->
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <p class="work-label">医療カンファレンス</p>
+        </div>
+        <div class="work-card" data-cat="animation">
+          <div class="work-img" style="background: #1A8FD1;">
+            <!-- TODO: 動画サムネイル -->
+            <div class="play-btn"><div class="play-tri"></div></div>
+          </div>
+          <p class="work-label">アニメーション</p>
+        </div>
+        <div class="work-card" data-cat="diversity">
+          <div class="work-img" style="background: #c8e4ef;">
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <p class="work-label">ダイバーシティ研修</p>
+        </div>
+        <div class="work-card" data-cat="medical">
+          <div class="work-img" style="background: #a0c8dc;">
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <p class="work-label">ワークショップ</p>
+        </div>
+        <div class="work-card" data-cat="bilingual">
+          <div class="work-img" style="background: #7cb8d4;">
+            <div class="play-btn"><div class="play-tri"></div></div>
+          </div>
+          <p class="work-label">バイリンガル対応</p>
+        </div>
+        <div class="work-card" data-cat="animation">
+          <div class="work-img" style="background: #d4edf6;">
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <p class="work-label">SNSコンテンツ</p>
+        </div>
+      </div>
+      <div class="works-more">
+        <a href="#" class="btn-more">すべての作品を見る →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 05 CONTACT ── -->
+  <section id="contact" class="section section-bg">
+    <div class="container">
+      <div class="sec-tag">Contact</div>
+
+      <!-- カレンダー（カスタムデザイン） -->
+      <div class="cal-wrap">
+        <div class="cal-head">
+          <span class="cal-month" id="cal-month-label">2025年 4月</span>
+          <div class="cal-nav">
+            <button class="cal-arr" onclick="changeMonth(-1)">‹</button>
+            <button class="cal-arr" onclick="changeMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #1A8FD1;"></div>
+            対応可能な日程
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #e4f3f9; border: 0.5px solid #b0d4e2;"></div>
+            予約済み・対応不可
+          </div>
+        </div>
+      </div>
+
+      <!-- Googleフォーム -->
+      <div class="gform-wrap">
+        <div class="gform-header">
+          <div class="gform-icon">G</div>
+          <div>
+            <p class="gform-title">お問い合わせフォーム</p>
+            <p class="gform-sub">送信内容はGoogleフォームに自動保存 → Gmailに通知が届きます</p>
+          </div>
+        </div>
+        <!--
+          TODO: 実際のGoogleフォームURLに差し替え
+          <iframe class="gform-iframe" src="https://docs.google.com/forms/d/e/[YOUR_FORM_ID]/viewform?embedded=true">
+          </iframe>
+        -->
+        <!-- 仮フォーム（Googleフォーム接続前のプレースホルダー） -->
+        <div class="gform-placeholder">
+          <div class="form-field">
+            <label class="form-label">お名前 <span style="color: var(--vivid);">*</span></label>
+            <input class="form-input" type="text" placeholder="例：山田 花子">
+          </div>
+          <div class="form-field">
+            <label class="form-label">会社名・団体名（任意）</label>
+            <input class="form-input" type="text" placeholder="例：株式会社〇〇">
+          </div>
+          <div class="form-field">
+            <label class="form-label">メールアドレス <span style="color: var(--vivid);">*</span></label>
+            <input class="form-input" type="email" placeholder="例：hanako@example.com">
+          </div>
+          <div class="form-field">
+            <label class="form-label">ご依頼の種類 <span style="color: var(--vivid);">*</span></label>
+            <select class="form-select">
+              <option value="">選択してください</option>
+              <option value="medical">Medical（医療・ヘルスケア）</option>
+              <option value="diversity">Diversity（多様性・インクルージョン）</option>
+              <option value="english">English（日英バイリンガル）</option>
+              <option value="animation">Animation（SNSアニメーション）</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">ご希望の時期</label>
+            <input class="form-input" type="text" placeholder="例：2025年6月ごろ">
+          </div>
+          <div class="form-field">
+            <label class="form-label">ご依頼内容・ご質問</label>
+            <textarea class="form-textarea" placeholder="イベントの概要、参加人数、言語（日本語／英語）などをお聞かせください。"></textarea>
+          </div>
+          <button class="btn-submit">送信する →</button>
+          <p class="form-note">
+            ※ 送信後、2営業日以内にご返信いたします。<br>
+            メールでのお問い合わせは <a href="mailto:hello@bluebeeink.com" style="color: var(--vivid);">hello@bluebeeink.com</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="nl-box">
+        <h3 class="nl-title">Newsletter</h3>
+        <p class="nl-desc">グラレコ Tips・新作・イベント情報を月1回お届けします</p>
+        <div class="nl-row">
+          <input class="nl-input" type="email" placeholder="メールアドレスを入力">
+          <button class="nl-btn">登録する</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-logo">Blue Bee Ink</p>
+        <p class="footer-copy">© 2025 吉川カンナ · Kobe, Japan</p>
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Instagram</a>
+        <a href="#" class="footer-link">LinkedIn</a>
+        <a href="#" class="footer-link">プライバシーポリシー</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Works filter ── */
+    function filterWorks(btn, cat) {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.work-card').forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /* ── Mobile menu ── */
+    function toggleMenu() {
+      alert('TODO: モバイルメニューをClaude Codeで実装');
+    }
+
+    /* ── Calendar ── */
+    const BUSY_DAYS = {
+      '2025-4': [1, 4, 6, 7, 10, 13, 14, 15, 18, 21, 23, 26, 27, 28],
+      '2025-5': [1, 4, 5, 11, 12, 18, 19, 25, 26],
+    };
+
+    let currentYear = 2025;
+    let currentMonth = 4;
+
+    function renderCalendar(year, month) {
+      const key = `${year}-${month}`;
+      const busyDays = BUSY_DAYS[key] || [];
+      const label = `${year}年 ${month}月`;
+      document.getElementById('cal-month-label').textContent = label;
+
+      const firstDay = new Date(year, month - 1, 1).getDay();
+      const daysInMonth = new Date(year, month, 0).getDate();
+      const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
+
+      const grid = document.getElementById('cal-grid');
+      grid.innerHTML = '';
+
+      const dayNames = ['月', '火', '水', '木', '金', '土', '日'];
+      dayNames.forEach(d => {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell cal-head-cell';
+        cell.textContent = d;
+        grid.appendChild(cell);
+      });
+
+      for (let i = 0; i < startOffset; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell cal-empty';
+        grid.appendChild(cell);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        const isBusy = busyDays.includes(d);
+        cell.className = 'cal-cell ' + (isBusy ? 'cal-busy' : 'cal-avail');
+        cell.textContent = d;
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+      if (currentMonth < 1)  { currentMonth = 12; currentYear--; }
+      renderCalendar(currentYear, currentMonth);
+    }
+
+    renderCalendar(currentYear, currentMonth);
+  </script>
+
+</body>
+</html>
