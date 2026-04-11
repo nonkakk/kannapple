@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Bee Ink — グラフィックレコーダー 吉川カンナ</title>
+  <meta name="description" content="神戸発、ヘルスケア・多様性・バイリンガル対応のグラフィックレコーダー。吉川カンナ（Blue Bee Ink）">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --teal:       #00a2bf;
+      --teal-dark:  #007d96;
+      --teal-light: #e0f6fa;
+      --teal-mid:   #5cc8db;
+      --blue:       #0059ea;
+      --blue-light: #deeaff;
+      --cream:      #ffff70;
+      --cream-soft: #ffffc2;
+      --white:      #ffffff;
+      --off-white:  #f4fbfd;
+      --text-dark:  #0c4a5c;
+      --text-mid:   #3a6e80;
+      --text-soft:  #7aaabb;
+      --border:     #b8e6ef;
+
+      --font: 'Nunito', 'M PLUS Rounded 1c', system-ui, sans-serif;
+      --max-w: 1160px;
+      --pad:   clamp(20px, 5vw, 72px);
+      --radius: 20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      font-size: 16px;
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+    .section { padding: 88px 0; }
+
+    /* ── SEC TAG ── */
+    .sec-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+      margin-bottom: 16px;
+    }
+    .sec-tag .tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--teal);
+      flex-shrink: 0;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 2px 20px rgba(0,162,191,0.12);
+    }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--teal-dark);
+      letter-spacing: 0.03em;
+    }
+    .nav-bee {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,162,191,0.35);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-mid);
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2.5px;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: width 0.25s;
+    }
+    .nav-link:hover { color: var(--teal); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 32px;
+      padding: 9px 22px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(0,89,234,0.28);
+    }
+    .nav-cta:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-hamburger span {
+      width: 22px; height: 2px;
+      background: var(--teal-dark);
+      border-radius: 2px;
+      display: block;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 2px solid var(--teal-light);
+      padding: 20px var(--pad);
+      z-index: 199;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { font-size: 16px; }
+    .mobile-menu .nav-cta { align-self: flex-start; margin-top: 4px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        rgba(0, 60, 100, 0.80) 0%,
+        rgba(0, 80, 120, 0.55) 50%,
+        rgba(0, 100, 140, 0.22) 100%
+      );
+      z-index: 1;
+    }
+    .hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 120px var(--pad) 100px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+    .hero-left { max-width: 620px; }
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--cream);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero-kicker::before {
+      content: '🐝';
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    .hero-h1 {
+      font-family: var(--font);
+      font-size: clamp(46px, 6.5vw, 88px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--cream);
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.82);
+      line-height: 2.0;
+      margin-bottom: 40px;
+      max-width: 480px;
+      font-weight: 500;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+    .btn-primary {
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: var(--cream);
+      border-radius: 40px;
+      padding: 14px 32px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 18px rgba(255,255,112,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(255,255,112,0.5); }
+    .btn-outline {
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 40px;
+      padding: 13px 32px;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: var(--white); }
+    .hero-stats {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .hero-stat { display: flex; flex-direction: column; gap: 2px; }
+    .hero-stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--cream);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+    .hero-stat-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,0.2);
+      align-self: center;
+    }
+    .hero-dots {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 3;
+    }
+    .hero-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.55);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 0;
+    }
+    .hero-dot.active {
+      background: var(--cream);
+      border-color: var(--cream);
+      transform: scale(1.4);
+    }
+
+    /* ── WAVE DIVIDER ── */
+    .wave { display: block; width: 100%; overflow: hidden; line-height: 0; }
+    .wave svg { display: block; }
+
+    /* ── ABOUT ── */
+    .about-section { background: var(--off-white); }
+    .about-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .about-left { position: relative; }
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 32px;
+      overflow: hidden;
+      background: var(--teal-light);
+      box-shadow: 0 16px 48px rgba(0,162,191,0.18);
+      position: relative;
+    }
+    .about-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .about-deco-ring {
+      position: absolute;
+      top: -14px; right: -14px;
+      width: 100%; height: 100%;
+      border: 3px dashed var(--teal-mid);
+      border-radius: 32px;
+      z-index: -1;
+    }
+    .about-badge-float {
+      position: absolute;
+      bottom: -20px; right: -16px;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 14px 16px;
+      box-shadow: 0 8px 28px rgba(0,162,191,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 2px solid var(--teal-light);
+    }
+    .about-badge-img {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--teal-light);
+      flex-shrink: 0;
+    }
+    .about-badge-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-badge-text { font-size: 12px; font-weight: 700; color: var(--text-dark); line-height: 1.5; }
+    .about-badge-sub { font-size: 11px; color: var(--text-soft); margin-top: 2px; }
+    .about-right {}
+    .about-h2 {
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .about-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .about-body {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 2.0;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+    .quote {
+      background: var(--teal-light);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 20px 20px 0;
+      padding: 22px 26px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .quote::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px; left: 18px;
+      font-size: 48px;
+      color: var(--teal-mid);
+      opacity: 0.4;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+    .quote-text {
+      font-size: 15px;
+      color: var(--text-dark);
+      font-style: italic;
+      line-height: 1.85;
+      margin-bottom: 10px;
+      font-weight: 500;
+      padding-left: 20px;
+    }
+    .quote-from {
+      font-size: 12px;
+      color: var(--teal-dark);
+      font-weight: 700;
+      padding-left: 20px;
+    }
+    .skills-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 32px;
+      background: var(--white);
+      color: var(--teal-dark);
+      border: 2px solid var(--teal-light);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { background: var(--teal-light); border-color: var(--teal); }
+    .skill-tag.accent {
+      background: var(--cream);
+      color: var(--text-dark);
+      border-color: var(--cream);
+    }
+
+    /* ── SERVICES ── */
+    .services-section {
+      background: var(--teal-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .services-section::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(0,162,191,0.12);
+      pointer-events: none;
+    }
+    .services-section::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,112,0.18);
+      pointer-events: none;
+    }
+    .services-header { margin-bottom: 48px; }
+    .services-h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.25;
+    }
+    .services-h2 em { font-style: italic; color: var(--teal); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 32px 24px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 20px rgba(0,162,191,0.08);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,162,191,0.18);
+      border-color: var(--teal-light);
+    }
+    .service-icon {
+      width: 56px; height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 26px;
+    }
+    .service-icon-1 { background: #dff0ff; }
+    .service-icon-2 { background: #fff0d0; }
+    .service-icon-3 { background: #d0f5ff; }
+    .service-icon-4 { background: #ffe0f0; }
+    .service-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+    .service-desc {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.85;
+      font-weight: 500;
+    }
+
+    /* ── WORKS ── */
+    .works-section { background: var(--white); }
+    .works-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .works-h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .pill {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 32px;
+      border: 2px solid var(--border);
+      color: var(--text-mid);
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill:hover { border-color: var(--teal); color: var(--teal); }
+    .pill.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .work-card {
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--white);
+      border: 2px solid var(--teal-light);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .work-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(0,162,191,0.16); }
+    .work-img {
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--teal-light);
+    }
+    .work-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .work-card:hover .work-img img { transform: scale(1.05); }
+    .work-img-placeholder { font-size: 12px; color: var(--text-soft); font-style: italic; }
+    .work-info { padding: 16px 20px 18px; }
+    .work-cat {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .work-label { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+    .play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,60,100,0.25);
+    }
+    .play-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .play-tri {
+      width: 0; height: 0;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-left: 14px solid var(--blue);
+      margin-left: 3px;
+    }
+    .works-more { text-align: center; margin-top: 40px; }
+    .btn-blue {
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 40px;
+      padding: 14px 36px;
+      display: inline-block;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: all 0.2s;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0,89,234,0.28);
+    }
+    .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,89,234,0.38); }
+
+    /* ── CONTACT ── */
+    .contact-section { background: var(--teal-light); position: relative; overflow: hidden; }
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(0,89,234,0.07);
+      pointer-events: none;
+    }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    .contact-h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .contact-h2 em { font-style: italic; color: var(--blue); }
+    .contact-desc {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.9;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    /* Calendar */
+    .cal-wrap {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 28px rgba(0,162,191,0.10);
+    }
+    .cal-head {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .cal-head-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .cal-month { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: 0.04em; }
+    .cal-sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 24px;
+      padding: 4px 12px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+    .cal-sync-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cream);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+    .cal-nav { display: flex; gap: 6px; align-items: center; }
+    .cal-arr {
+      height: 32px; min-width: 32px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      color: var(--white);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      transition: background 0.2s;
+      font-family: var(--font);
+    }
+    .cal-arr:hover { background: rgba(255,255,255,0.3); }
+    .cal-arr-today { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+    .cal-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 40px 20px;
+      font-size: 13px;
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+    .cal-loading-spinner {
+      width: 20px; height: 20px;
+      border: 2.5px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cal-error { padding: 28px 20px; text-align: center; }
+    .cal-error-msg { font-size: 13px; color: #c0392b; margin-bottom: 12px; line-height: 1.5; }
+    .cal-retry-btn {
+      font-size: 12px; font-weight: 700;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+      border-radius: 24px;
+      padding: 7px 18px;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+    .cal-retry-btn:hover { background: var(--teal); color: var(--white); }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      padding: 16px;
+    }
+    .cal-cell {
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      position: relative;
+      transition: transform 0.15s;
+    }
+    .cal-head-cell {
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+    .cal-avail {
+      background: var(--blue);
+      color: var(--white);
+      cursor: pointer;
+    }
+    .cal-avail:hover { transform: scale(1.12); }
+    .cal-busy { background: #edf5f8; color: var(--text-soft); }
+    .cal-today {
+      background: var(--white);
+      color: var(--teal);
+      border: 2.5px solid var(--cream);
+    }
+    .cal-today.cal-busy { background: #edf5f8; color: var(--text-soft); border-color: var(--border); }
+    .cal-selected { outline: 2px solid var(--teal-dark); outline-offset: 1px; }
+    .cal-event-badge {
+      position: absolute;
+      top: 3px; right: 4px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+    }
+    .cal-busy .cal-event-badge { background: var(--teal-mid); }
+    .cal-event-detail {
+      margin: 0 16px 16px;
+      background: var(--teal-light);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .cal-event-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .cal-event-close {
+      background: none; border: none;
+      font-size: 13px; color: var(--text-soft);
+      cursor: pointer; padding: 2px 6px; border-radius: 6px;
+    }
+    .cal-event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+    .cal-event-item:first-of-type { border-top: none; }
+    .cal-event-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+    .cal-event-name { line-height: 1.4; font-weight: 600; }
+    .cal-event-time { font-size: 11px; color: var(--text-soft); margin-top: 2px; }
+    .cal-legend {
+      display: flex; gap: 16px;
+      padding: 0 16px 14px;
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-mid); font-weight: 600; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+
+    /* Form */
+    .form-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(0,162,191,0.10);
+    }
+    .form-card-header {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .form-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .form-card-title { font-size: 16px; font-weight: 700; color: var(--white); }
+    .form-card-sub { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 3px; font-weight: 500; }
+    .form-body { padding: 28px; }
+    .form-field { margin-bottom: 18px; }
+    .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .form-req { color: var(--teal); }
+    .form-input {
+      width: 100%;
+      height: 46px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--off-white);
+      padding: 0 16px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(0,162,191,0.1);
+      background: var(--white);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-select {
+      width: 100%;
+      height: 46px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--off-white);
+      padding: 0 16px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233a6e80' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 38px;
+    }
+    .form-select:focus { border-color: var(--teal); }
+    .form-textarea {
+      width: 100%;
+      height: 110px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--off-white);
+      padding: 12px 16px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      line-height: 1.7;
+    }
+    .form-textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(0,162,191,0.1);
+      background: var(--white);
+    }
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+      border-radius: 40px;
+      border: none;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 4px 18px rgba(0,89,234,0.28);
+    }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,89,234,0.36); }
+    .form-note {
+      font-size: 12px;
+      color: var(--text-soft);
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+    .form-note a { color: var(--teal); text-decoration: underline; }
+
+    /* Newsletter */
+    .nl-box {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      margin-top: 20px;
+      box-shadow: 0 4px 20px rgba(0,162,191,0.08);
+    }
+    .nl-title { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 6px; }
+    .nl-desc { font-size: 13px; color: var(--text-mid); line-height: 1.7; margin-bottom: 16px; font-weight: 500; }
+    .nl-row { display: flex; gap: 10px; }
+    .nl-input {
+      flex: 1;
+      height: 46px;
+      border: 2px solid var(--border);
+      border-radius: 32px;
+      background: var(--off-white);
+      padding: 0 18px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dark);
+      outline: none;
+    }
+    .nl-input:focus { border-color: var(--teal); }
+    .nl-btn {
+      height: 46px;
+      padding: 0 22px;
+      background: var(--teal);
+      border-radius: 32px;
+      border: none;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nl-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: linear-gradient(135deg, #004d70 0%, #005c8a 100%);
+      padding: 52px 0 32px;
+    }
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .footer-logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .footer-logo span { color: var(--cream); }
+    .footer-tagline { font-size: 12px; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; font-weight: 600; }
+    .footer-nav { display: flex; gap: 48px; flex-wrap: wrap; }
+    .footer-nav-group h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 14px;
+    }
+    .footer-nav-group a {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .footer-nav-group a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); font-weight: 500; }
+    .footer-social { display: flex; gap: 14px; }
+    .footer-social a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--cream); }
+
+    /* ── ANIM ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .anim-in.visible { opacity: 1; transform: translateY(0); }
+    .hero-kicker { animation: fadeUp 0.6s ease both; }
+    .hero-h1     { animation: fadeUp 0.65s ease 0.1s both; }
+    .hero-sub    { animation: fadeUp 0.65s ease 0.2s both; }
+    .hero-btns   { animation: fadeUp 0.65s ease 0.3s both; }
+    .hero-stats  { animation: fadeUp 0.65s ease 0.4s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-layout { grid-template-columns: 300px 1fr; gap: 48px; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      .hero-inner { padding: 80px var(--pad) 70px; }
+      .hero-h1 { font-size: clamp(38px, 9vw, 56px); }
+      .about-layout { grid-template-columns: 1fr; }
+      .about-left { display: none; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .works-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-top { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .works-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <div class="nav-bee">🐝</div>
+        Blue Bee Ink
+      </a>
+      <div class="nav-links">
+        <a href="#home"    class="nav-link">Home</a>
+        <a href="#about"   class="nav-link">About</a>
+        <a href="#service" class="nav-link">Service</a>
+        <a href="#works"   class="nav-link">Works</a>
+        <a href="#contact" class="nav-cta">Contact →</a>
+      </div>
+      <div class="nav-hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#home"    class="nav-link" onclick="closeMenu()">Home</a>
+    <a href="#about"   class="nav-link" onclick="closeMenu()">About</a>
+    <a href="#service" class="nav-link" onclick="closeMenu()">Service</a>
+    <a href="#works"   class="nav-link" onclick="closeMenu()">Works</a>
+    <a href="#contact" class="nav-cta"  onclick="closeMenu()">Contact →</a>
+  </div>
+
+  <!-- ── 01 HERO ── -->
+  <section id="home" class="hero">
+    <div class="hero-slides" id="hero-slides">
+      <div class="hero-slide active" style="background-image: url('images/gra1.png');"></div>
+      <div class="hero-slide"        style="background-image: url('images/gra2.jpg');"></div>
+      <div class="hero-slide"        style="background-image: url('images/gra3.png');"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-kicker">Graphic Recorder · Bilingual · Kobe</p>
+        <h1 class="hero-h1">Ideas drawn<br>into <em>clarity.</em></h1>
+        <p class="hero-sub">
+          むずかしいアイデアも、絵にすれば伝わる。<br>
+          ヘルスケア・多様性・日英バイリンガル対応の<br>
+          グラフィックレコーダーです。
+        </p>
+        <div class="hero-btns">
+          <a href="#contact"><button class="btn-primary">✉️ お問い合わせ</button></a>
+          <a href="#works"><button class="btn-outline">🎨 Works を見る</button></a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">200+</div>
+            <div class="hero-stat-label">Sessions</div>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">日 / EN</div>
+            <div class="hero-stat-label">Bilingual</div>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">神戸</div>
+            <div class="hero-stat-label">Based in Kobe</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots" id="hero-dots">
+      <button class="hero-dot active" onclick="goToSlide(0)" aria-label="スライド1"></button>
+      <button class="hero-dot"        onclick="goToSlide(1)" aria-label="スライド2"></button>
+      <button class="hero-dot"        onclick="goToSlide(2)" aria-label="スライド3"></button>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <div class="wave" style="background:var(--white);">
+    <svg viewBox="0 0 1200 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="48">
+      <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#f4fbfd"/>
+    </svg>
+  </div>
+
+  <!-- ── 02 ABOUT ── -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-left">
+          <div style="position:relative;">
+            <div class="about-photo">
+              <img src="images/aboutme.jpg" alt="吉川カンナ" onerror="this.style.display='none'">
+            </div>
+            <div class="about-deco-ring"></div>
+            <div class="about-badge-float">
+              <div class="about-badge-img">
+                <img src="images/アンバサダー.jpg" alt="認定グラレコアンバサダー" onerror="this.style.display='none'">
+              </div>
+              <div>
+                <div class="about-badge-text">認定グラレコ<br>アンバサダー</div>
+                <div class="about-badge-sub">Certified Ambassador</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right anim-in">
+          <div class="sec-tag"><span class="tag-dot"></span>About me</div>
+          <h2 class="about-h2">吉川カンナ</h2>
+          <p class="about-title">Graphic Recorder · Blue Bee Ink · Kobe</p>
+          <p class="about-body">
+            外資系製薬企業で働いていた経験をいかして、神戸からグラフィックレコーダーとして活動しています。医療・ヘルスケア分野の複雑な内容も、絵とことばでわかりやすく。日本語と英語、どちらでもおまかせください。アニメーションも得意で、SNSで広がるコンテンツも制作しています。
+          </p>
+          <div class="quote">
+            <p class="quote-text">
+              「カンナさんが描いてくれたおかげで、参加者みんながすっと内容を理解できました。あんなにわかりやすくなるとは！」
+            </p>
+            <p class="quote-from">— クライアント名・役職 / 企業名</p>
+          </div>
+          <div class="skills-row">
+            <span class="skill-tag accent">Healthcare 🏥</span>
+            <span class="skill-tag">Diversity & Inclusion 🌈</span>
+            <span class="skill-tag accent">Bilingual 日/EN 🌏</span>
+            <span class="skill-tag">Animation ✨</span>
+            <span class="skill-tag">Pharma 💊</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <div class="wave" style="background:var(--off-white);">
+    <svg viewBox="0 0 1200 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="48">
+      <path d="M0,0 C200,48 400,0 600,24 C800,48 1000,0 1200,0 L1200,48 L0,48 Z" fill="#e0f6fa"/>
+    </svg>
+  </div>
+
+  <!-- ── 03 SERVICE ── -->
+  <section id="service" class="section services-section">
+    <div class="container">
+      <div class="services-header anim-in">
+        <div class="sec-tag"><span class="tag-dot"></span>Services</div>
+        <h2 class="services-h2">こんな場面で<br>お役に立てます 💡</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card anim-in">
+          <div class="service-icon service-icon-1">🏥</div>
+          <div class="service-name">Medical</div>
+          <div class="service-desc">製薬・医療・ヘルスケア分野の専門知識で、難しいテーマもわかりやすいビジュアルに落とし込みます。</div>
+        </div>
+        <div class="service-card anim-in" style="transition-delay:0.08s">
+          <div class="service-icon service-icon-2">🌈</div>
+          <div class="service-name">Diversity</div>
+          <div class="service-desc">多様性・インクルージョンをテーマにしたワークショップやイベントで、すべての声を丁寧に可視化します。</div>
+        </div>
+        <div class="service-card anim-in" style="transition-delay:0.16s">
+          <div class="service-icon service-icon-3">🌐</div>
+          <div class="service-name">English</div>
+          <div class="service-desc">日英バイリンガルで対応できるので、国際会議や外資系企業のミーティングもスムーズにサポートします。</div>
+        </div>
+        <div class="service-card anim-in" style="transition-delay:0.24s">
+          <div class="service-icon service-icon-4">✨</div>
+          <div class="service-name">Animation</div>
+          <div class="service-desc">グラレコをそのままアニメーションに。SNSで伝わりやすいモーションコンテンツをつくります。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <div class="wave" style="background:#e0f6fa;">
+    <svg viewBox="0 0 1200 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="48">
+      <path d="M0,24 C300,0 600,48 900,24 C1050,12 1150,36 1200,24 L1200,48 L0,48 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+
+  <!-- ── 04 WORKS ── -->
+  <section id="works" class="section works-section">
+    <div class="container">
+      <div class="works-header">
+        <div>
+          <div class="sec-tag"><span class="tag-dot"></span>Works</div>
+          <h2 class="works-h2">実績・作品 🎨</h2>
+        </div>
+      </div>
+      <div class="filter-row">
+        <button class="pill active" data-filter="all"       onclick="filterWorks(this,'all')">All</button>
+        <button class="pill"        data-filter="medical"   onclick="filterWorks(this,'medical')">Medical</button>
+        <button class="pill"        data-filter="diversity" onclick="filterWorks(this,'diversity')">Diversity</button>
+        <button class="pill"        data-filter="animation" onclick="filterWorks(this,'animation')">Animation</button>
+        <button class="pill"        data-filter="bilingual" onclick="filterWorks(this,'bilingual')">Bilingual</button>
+      </div>
+      <div class="works-grid" id="works-grid">
+        <div class="work-card" data-cat="medical">
+          <div class="work-img">
+            <img src="images/gra1.png" alt="医療カンファレンス グラフィックレコーディング">
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Medical</div>
+            <div class="work-label">医療カンファレンス</div>
+          </div>
+        </div>
+        <div class="work-card" data-cat="diversity">
+          <div class="work-img">
+            <img src="images/gra2.jpg" alt="ダイバーシティ研修 グラフィックレコーディング">
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Diversity</div>
+            <div class="work-label">ダイバーシティ研修</div>
+          </div>
+        </div>
+        <div class="work-card" data-cat="bilingual">
+          <div class="work-img">
+            <img src="images/gra3.png" alt="バイリンガル対応 グラフィックレコーディング">
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Bilingual</div>
+            <div class="work-label">バイリンガル対応</div>
+          </div>
+        </div>
+        <div class="work-card" data-cat="animation">
+          <div class="work-img" style="background:#ddeeff;">
+            <div class="play-btn">
+              <div class="play-circle"><div class="play-tri"></div></div>
+            </div>
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Animation</div>
+            <div class="work-label">SNSアニメーション</div>
+          </div>
+        </div>
+        <div class="work-card" data-cat="medical">
+          <div class="work-img" style="background:var(--teal-light);">
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Medical</div>
+            <div class="work-label">ワークショップ</div>
+          </div>
+        </div>
+        <div class="work-card" data-cat="diversity">
+          <div class="work-img" style="background:var(--blue-light);">
+            <span class="work-img-placeholder">作品画像</span>
+          </div>
+          <div class="work-info">
+            <div class="work-cat">Diversity</div>
+            <div class="work-label">インクルージョン研修</div>
+          </div>
+        </div>
+      </div>
+      <div class="works-more">
+        <button class="btn-blue">もっと見る →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <div class="wave" style="background:#ffffff;">
+    <svg viewBox="0 0 1200 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="48">
+      <path d="M0,0 C400,48 800,0 1200,24 L1200,48 L0,48 Z" fill="#e0f6fa"/>
+    </svg>
+  </div>
+
+  <!-- ── 05 CONTACT ── -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="sec-tag"><span class="tag-dot"></span>Contact</div>
+      <div class="contact-layout">
+        <div class="contact-left">
+          <h2 class="contact-h2">お気軽に<br><em>ご相談ください</em> 🌟</h2>
+          <p class="contact-desc">
+            「こんなことお願いできる？」くらいの気持ちで大丈夫です。<br>
+            まずはお気軽にメッセージをどうぞ。<br>
+            青い日付が対応可能な日程です。
+          </p>
+
+          <div class="cal-wrap">
+            <div class="cal-head">
+              <div class="cal-head-left">
+                <span class="cal-month" id="cal-month-label">読み込み中...</span>
+                <span class="cal-sync-badge" id="cal-sync-badge">
+                  <span class="cal-sync-dot"></span>Googleカレンダー連携
+                </span>
+              </div>
+              <div class="cal-nav">
+                <button class="cal-arr" onclick="changeMonth(-1)" aria-label="前の月">‹</button>
+                <button class="cal-arr cal-arr-today" onclick="goToToday()">今月</button>
+                <button class="cal-arr" onclick="changeMonth(1)"  aria-label="次の月">›</button>
+              </div>
+            </div>
+            <div class="cal-loading" id="cal-loading">
+              <div class="cal-loading-spinner"></div>
+              <span>カレンダーを読み込み中...</span>
+            </div>
+            <div class="cal-error" id="cal-error" style="display:none;">
+              <p class="cal-error-msg" id="cal-error-msg"></p>
+              <button class="cal-retry-btn" onclick="initCalendar()">再読み込み</button>
+            </div>
+            <div class="cal-body" id="cal-body" style="display:none;">
+              <div class="cal-grid" id="cal-grid"></div>
+              <div class="cal-event-detail" id="cal-event-detail" style="display:none;">
+                <div class="cal-event-detail-header">
+                  <span id="cal-event-date"></span>
+                  <button class="cal-event-close" onclick="closeEventDetail()">✕</button>
+                </div>
+                <div id="cal-event-list"></div>
+              </div>
+            </div>
+            <div class="cal-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:var(--blue);"></div>対応可能
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#edf5f8;border:1.5px solid var(--border);"></div>予約済み
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#fff;border:2.5px solid var(--cream);"></div>今日
+              </div>
+            </div>
+          </div>
+
+          <div class="nl-box anim-in">
+            <h3 class="nl-title">📩 Newsletter</h3>
+            <p class="nl-desc">グラレコ Tips・新作・イベント情報を月1回お届けします🐝</p>
+            <div class="nl-row">
+              <input class="nl-input" type="email" placeholder="メールアドレスを入力">
+              <button class="nl-btn">登録する</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-right anim-in" style="transition-delay:0.1s">
+          <div class="form-card">
+            <div class="form-card-header">
+              <div class="form-card-icon">✉️</div>
+              <div>
+                <div class="form-card-title">お問い合わせフォーム</div>
+                <div class="form-card-sub">2営業日以内にご返信します</div>
+              </div>
+            </div>
+            <!--
+              TODO: Googleフォームに差し替え時はこちらを使用
+              <iframe class="gform-iframe" style="width:100%;height:560px;border:none;display:block;"
+                src="https://docs.google.com/forms/d/e/[YOUR_FORM_ID]/viewform?embedded=true"></iframe>
+            -->
+            <div class="form-body">
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label">お名前 <span class="form-req">*</span></label>
+                  <input class="form-input" type="text" placeholder="山田 花子">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">会社名・団体名</label>
+                  <input class="form-input" type="text" placeholder="株式会社〇〇（任意）">
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label">メールアドレス <span class="form-req">*</span></label>
+                <input class="form-input" type="email" placeholder="hanako@example.com">
+              </div>
+              <div class="form-field">
+                <label class="form-label">ご依頼の種類 <span class="form-req">*</span></label>
+                <select class="form-select">
+                  <option value="">選択してください</option>
+                  <option value="medical">Medical（医療・ヘルスケア）</option>
+                  <option value="diversity">Diversity（多様性・インクルージョン）</option>
+                  <option value="english">English（日英バイリンガル）</option>
+                  <option value="animation">Animation（SNSアニメーション）</option>
+                  <option value="other">その他・まずは相談したい</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">ご希望の時期</label>
+                <input class="form-input" type="text" placeholder="例：2025年6月ごろ">
+              </div>
+              <div class="form-field">
+                <label class="form-label">ご依頼内容・ご質問</label>
+                <textarea class="form-textarea" placeholder="イベントの概要、参加人数、言語（日本語 / 英語）など、なんでもお気軽に！"></textarea>
+              </div>
+              <button class="btn-submit">送信する 🚀</button>
+              <p class="form-note">
+                メールでのお問い合わせは
+                <a href="mailto:hello@bluebeeink.com">hello@bluebeeink.com</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">Blue <span>Bee</span> Ink 🐝</div>
+          <div class="footer-tagline">Graphic Recorder · Kobe, Japan</div>
+        </div>
+        <nav class="footer-nav">
+          <div class="footer-nav-group">
+            <h4>Navigation</h4>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#service">Service</a>
+            <a href="#works">Works</a>
+          </div>
+          <div class="footer-nav-group">
+            <h4>Contact</h4>
+            <a href="#contact">お問い合わせ</a>
+            <a href="mailto:hello@bluebeeink.com">hello@bluebeeink.com</a>
+            <a href="#">プライバシーポリシー</a>
+          </div>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 吉川カンナ · Kobe, Japan</p>
+        <div class="footer-social">
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── NAV scroll ── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    /* ── Mobile menu ── */
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('mobile-menu').classList.remove('open');
+    }
+
+    /* ── Works filter ── */
+    function filterWorks(btn, cat) {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.work-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+
+    /* ── Scroll-in animation ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.anim-in').forEach(el => observer.observe(el));
+
+    /* ── Hero Slideshow ── */
+    (function () {
+      const slides = document.querySelectorAll('.hero-slide');
+      const dots   = document.querySelectorAll('.hero-dot');
+      let current  = 0;
+      let timer    = null;
+
+      function goToSlide(n) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      window.goToSlide = function (n) { goToSlide(n); resetTimer(); };
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => goToSlide(current + 1), 5000);
+      }
+
+      resetTimer();
+    })();
+
+    /* ══════════════════════════════════════════════
+       GOOGLE CALENDAR API
+       設定方法：
+       1. Google Cloud Console でプロジェクトを作成
+       2. Google Calendar API を有効化
+       3. 認証情報 → APIキーを作成（HTTPリファラーで制限）
+       4. Googleカレンダー →「一般公開して誰でも利用できるようにする」
+       5. カレンダーIDを確認（設定 → カレンダーの統合）
+       6. 下記の CALENDAR_ID と API_KEY を書き換える
+    ══════════════════════════════════════════════ */
+    const GCAL_CONFIG = {
+      CALENDAR_ID: 'YOUR_CALENDAR_ID@gmail.com',
+      API_KEY:     'YOUR_GOOGLE_API_KEY',
+      SHOW_EVENT_TITLES: false,
+      MONTHS_TO_CACHE:   3,
+    };
+
+    let calYear  = new Date().getFullYear();
+    let calMonth = new Date().getMonth() + 1;
+    let calEventCache = {};
+    let calLoading = false;
+    let selectedDate = null;
+
+    async function fetchEvents(year, month) {
+      const key = `${year}-${String(month).padStart(2,'0')}`;
+      if (calEventCache[key]) return calEventCache[key];
+
+      const timeMin = new Date(year, month - 1, 1).toISOString();
+      const timeMax = new Date(year, month, 0, 23, 59, 59).toISOString();
+
+      const url = new URL('https://www.googleapis.com/calendar/v3/calendars/' +
+        encodeURIComponent(GCAL_CONFIG.CALENDAR_ID) + '/events');
+      url.searchParams.set('key',          GCAL_CONFIG.API_KEY);
+      url.searchParams.set('timeMin',      timeMin);
+      url.searchParams.set('timeMax',      timeMax);
+      url.searchParams.set('singleEvents', 'true');
+      url.searchParams.set('orderBy',      'startTime');
+      url.searchParams.set('maxResults',   '250');
+
+      const res = await fetch(url.toString());
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error?.message || `API Error ${res.status}`);
+      }
+      const data = await res.json();
+
+      const byDate = {};
+      (data.items || []).forEach(event => {
+        const start = event.start?.date || event.start?.dateTime?.slice(0, 10);
+        const end   = event.end?.date   || event.end?.dateTime?.slice(0, 10);
+        if (!start) return;
+        const endDate = new Date(end);
+        let cur = new Date(start);
+        while (cur < endDate) {
+          const d = cur.toISOString().slice(0, 10);
+          if (!byDate[d]) byDate[d] = [];
+          byDate[d].push({
+            id: event.id, title: event.summary || '予定あり',
+            allDay: !!event.start?.date,
+            start: event.start?.dateTime, end: event.end?.dateTime,
+          });
+          cur.setDate(cur.getDate() + 1);
+        }
+      });
+
+      calEventCache[key] = byDate;
+      return byDate;
+    }
+
+    function getDemoEvents(year, month) {
+      const byDate = {};
+      const days = new Date(year, month, 0).getDate();
+      for (let d = 1; d <= days; d++) {
+        const date = new Date(year, month - 1, d);
+        const dow  = date.getDay();
+        const k    = date.toISOString().slice(0, 10);
+        if (dow === 0 || dow === 6 || [5,10,15,20].includes(d)) {
+          byDate[k] = [{ id: d, title: '予定あり', allDay: true }];
+        }
+      }
+      return byDate;
+    }
+
+    async function renderCalendar(year, month) {
+      if (calLoading) return;
+      calLoading = true;
+      const isDemo = (GCAL_CONFIG.API_KEY === 'YOUR_GOOGLE_API_KEY');
+
+      document.getElementById('cal-month-label').textContent = `${year}年 ${month}月`;
+      document.getElementById('cal-loading').style.display = 'flex';
+      document.getElementById('cal-error').style.display   = 'none';
+      document.getElementById('cal-body').style.display    = 'none';
+      closeEventDetail();
+
+      let eventsByDate;
+      try {
+        eventsByDate = isDemo ? getDemoEvents(year, month) : await fetchEvents(year, month);
+        document.querySelector('.cal-sync-badge').innerHTML =
+          `<span class="cal-sync-dot"></span>` +
+          (isDemo ? 'デモ表示（APIキー未設定）' : 'Googleカレンダー連携中');
+      } catch (err) {
+        document.getElementById('cal-loading').style.display = 'none';
+        document.getElementById('cal-error').style.display   = 'block';
+        document.getElementById('cal-error-msg').textContent =
+          `カレンダーの読み込みに失敗しました。\n${err.message}`;
+        calLoading = false;
+        return;
+      }
+
+      const grid = document.getElementById('cal-grid');
+      grid.innerHTML = '';
+
+      ['月','火','水','木','金','土','日'].forEach(d => {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell cal-head-cell';
+        cell.textContent = d;
+        grid.appendChild(cell);
+      });
+
+      const firstDow = new Date(year, month - 1, 1).getDay();
+      const offset   = (firstDow === 0) ? 6 : firstDow - 1;
+      const days     = new Date(year, month, 0).getDate();
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      for (let i = 0; i < offset; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell cal-empty';
+        grid.appendChild(cell);
+      }
+
+      for (let d = 1; d <= days; d++) {
+        const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const events  = eventsByDate[dateStr] || [];
+        const isBusy  = events.length > 0;
+        const isToday = dateStr === todayStr;
+
+        const cell = document.createElement('div');
+        let cls = 'cal-cell';
+        if (isToday) cls += isBusy ? ' cal-today cal-busy' : ' cal-today cal-avail';
+        else         cls += isBusy ? ' cal-busy' : ' cal-avail';
+        if (dateStr === selectedDate) cls += ' cal-selected';
+        cell.className = cls;
+        cell.textContent = d;
+
+        if (events.length > 0) {
+          const badge = document.createElement('div');
+          badge.className = 'cal-event-badge';
+          cell.appendChild(badge);
+        }
+
+        if (!isBusy) {
+          cell.addEventListener('click', () => {
+            selectedDate = dateStr;
+            document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('cal-selected'));
+            cell.classList.add('cal-selected');
+            document.getElementById('cal-event-detail').style.display = 'none';
+            document.querySelector('.contact-right').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        } else if (GCAL_CONFIG.SHOW_EVENT_TITLES && events.length > 0) {
+          cell.addEventListener('click', () => {
+            selectedDate = dateStr;
+            document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('cal-selected'));
+            cell.classList.add('cal-selected');
+            showEventDetail(dateStr, events);
+          });
+        }
+        grid.appendChild(cell);
+      }
+
+      document.getElementById('cal-loading').style.display = 'none';
+      document.getElementById('cal-body').style.display    = 'block';
+      calLoading = false;
+    }
+
+    function showEventDetail(dateStr, events) {
+      const panel = document.getElementById('cal-event-detail');
+      const d = new Date(dateStr + 'T00:00:00');
+      document.getElementById('cal-event-date').textContent =
+        `${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+      const list = document.getElementById('cal-event-list');
+      list.innerHTML = events.map(ev => {
+        const timeStr = ev.allDay ? '終日' :
+          (ev.start ? new Date(ev.start).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}) +
+           ' – ' + new Date(ev.end).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}) : '');
+        return `<div class="cal-event-item">
+          <div class="cal-event-dot" style="background:var(--teal-mid);"></div>
+          <div>
+            <div class="cal-event-name">${ev.title}</div>
+            <div class="cal-event-time">${timeStr}</div>
+          </div>
+        </div>`;
+      }).join('');
+      panel.style.display = 'block';
+    }
+
+    function closeEventDetail() {
+      document.getElementById('cal-event-detail').style.display = 'none';
+      selectedDate = null;
+    }
+
+    function changeMonth(delta) {
+      calMonth += delta;
+      if (calMonth > 12) { calMonth = 1;  calYear++; }
+      if (calMonth < 1)  { calMonth = 12; calYear--; }
+      renderCalendar(calYear, calMonth);
+    }
+
+    function goToToday() {
+      calYear  = new Date().getFullYear();
+      calMonth = new Date().getMonth() + 1;
+      renderCalendar(calYear, calMonth);
+    }
+
+    function initCalendar() { renderCalendar(calYear, calMonth); }
+
+    document.addEventListener('DOMContentLoaded', initCalendar);
+  </script>
+
+</body>
+</html>
